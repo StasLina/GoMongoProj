@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редактировать библиотеку</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"  rel="stylesheet">
+</head>
+<body class="container mt-4 position-relative">
+    <h1>Редактировать библиотеку</h1>
+    {{ $libraryID := .libraryID }}
+    <!-- Кнопка удаления в правом верхнем углу -->
+    <a href="/libraries/{{ $libraryID }}/delete"
+       class="btn btn-sm btn-danger position-absolute"
+       style="top: 10px; right: 15px;"
+       title="Удалить"
+       onclick="return confirm('Вы уверены, что хотите удалить эту библиотеку?')">
+        <i class="bi bi-trash"></i>
+    </a>
+
+    <form action="/libraries/{{ $libraryID }}/update" method="POST">
+        <input type="hidden" name="_method" value="PUT"> <!-- для эмуляции PUT метода -->
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Название</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{ .Library.Name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Адрес</label>
+            <input type="text" id="address" name="address" class="form-control" value="{{ .Library.Address }}" required>
+        </div>
+
+        <h4>Локации</h4>
+        <div id="locations">
+            {{ if .Library.Locations }}
+                {{ range .Library.Locations }}
+                    <div class="location-group mb-3 d-flex gap-2">
+                        <input type="hidden" name="locationIDs[]" value="{{ toHex .LocationID }}">
+                        <input type="text" name="locationNames[]" placeholder="Название филиала" class="form-control" value="{{ .Name }}" required>
+                        <input type="text" name="locationTypes[]" placeholder="Тип филиала" class="form-control" value="{{ .Type }}" required>
+                        <button type="button" class="btn btn-sm btn-danger d-flex align-items-center" onclick="removeLocation(this)" title="Удалить">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                {{ end }}
+            {{ else }}
+                <p class="text-muted">Нет локаций</p>
+            {{ end }}
+        </div>
+
+        <button type="button" class="btn btn-secondary" onclick="addLocation()">Добавить филиал</button>
+        <button type="submit" class="btn btn-primary mt-0">Сохранить изменения</button>
+    </form>
+
+    <script>
+        function addLocation() {
+            const container = document.getElementById('locations');
+            const div = document.createElement('div');
+            div.className = 'location-group mb-3 d-flex gap-2';
+            div.innerHTML = `
+                <input type="hidden" name="locationIDs[]" value="">
+                <input type="text" name="locationNames[]" placeholder="Название филиала" class="form-control" required>
+                <input type="text" name="locationTypes[]" placeholder="Тип филиала" class="form-control" required>
+                <button type="button" class="btn btn-sm btn-danger d-flex align-items-center" onclick="removeLocation(this)" title="Удалить">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+        function removeLocation(button) {
+            const group = button.closest('.location-group');
+            group.remove();
+        }
+    </script>
+</body>
+</html>

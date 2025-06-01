@@ -1,0 +1,30 @@
+<!-- templates/book_form.html -->
+{{ define "book_form_content" }}
+
+<h1 class="mb-4">{{ if .book }}Редактировать книгу{{ else }}Добавить новую книгу{{ end }}</h1>
+
+{{ if .error }}
+<div class="alert alert-danger">{{ .error }}</div>
+{{ end }}
+
+<form method="POST" action="{{ .action }}">
+    {{ if .id_hex }}
+    <input type="hidden" name="_id" value="{{ .id_hex }}">
+    {{ end }}
+    <div class="mb-3">
+        <label for="title" class="form-label">Название</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ .title }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="author" class="form-label">Автор</label>
+        <input type="text" class="form-control" id="author" name="author" value="{{ .author }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="publicationYear" class="form-label">Год публикации</label>
+        <input type="number" class="form-control" id="publicationYear" name="publicationYear" value="{{ .year }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        {{ if .book }}Сохранить{{ else }}Добавить{{ end }}
+    </button>
+</form>
+{{ end }}

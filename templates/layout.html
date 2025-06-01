@@ -1,0 +1,52 @@
+<!-- templates/layout.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Библиотечная система</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"  rel="stylesheet">
+    <style>
+        body {
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+        .library-card {
+            margin-bottom: 2rem;
+        }
+        .location-list {
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+        {{ template "menu" . }}
+
+        {{ $tmpl := .content_template }}
+        {{ if eq $tmpl "libraries" }}
+            {{ template "libraries_content" . }}
+        {{ else if eq $tmpl "books" }}
+            {{ template "books_content" . }}
+        {{ else if eq $tmpl "book_form" }}
+            {{ template "book_form_content" . }}
+        {{ else if eq $tmpl "book_inventory_create" }}
+            {{ template "book_inventory_create_content" . }}
+        {{ else if eq $tmpl "book_inventory_edit" }}
+            {{ template "book_inventory_edit_content" . }}
+        {{ else if eq $tmpl "book_inventory" }}
+            {{ template "book_inventory_content" . }}
+        {{ else if eq $tmpl "hard_book_form" }}
+            {{ template "hard_book_form_content" . }}
+        {{ else if eq $tmpl "hard_book" }}
+            {{ template "hard_book_content" . }}
+        {{ else if eq $tmpl "book_form" }}
+            {{ template "book_form_content" . }}
+        {{ else if eq $tmpl "book_form" }}
+            {{ template "book_form_content" . }}
+        {{ else }}
+            {{ template "menu" . }}
+        {{ end }}
+    <!-- Подключаем JS Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html>

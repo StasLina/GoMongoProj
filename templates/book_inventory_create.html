@@ -1,0 +1,26 @@
+{{ define "book_inventory_create_content" }}
+<h1>Добавить книгу</h1>
+<form method="POST">
+    <div class="mb-3">
+        <label>Заголовок</label>
+        <input type="text" name="title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Автор</label>
+        <input type="text" name="author" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Количество</label>
+        <input type="number" name="quantity" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label>Book ID (оставьте пустым для авто)</label>
+        <input type="text" name="bookId" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>Location ID (оставьте пустым для авто)</label>
+        <input type="text" name="locationId" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{{ end }}

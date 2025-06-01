@@ -1,0 +1,38 @@
+<!-- templates/books.html -->
+{{ define "books_content" }}
+
+<h1 class="mb-4">Книги</h1>
+<a href="/books/new" class="btn btn-success mb-4">
+    <i class="bi bi-plus-circle"></i> Добавить книгу
+</a>
+
+{{ if .books }}
+<p class="mb-3">Найдено книг: {{ len .books }}</p>
+
+{{ range .books }}
+    {{ $id := .ID.Hex }}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+            <div class="position-absolute" style="top: 10px; right: 15px;">
+                <a href="/books/{{$id}}/update" class="btn btn-sm btn-warning me-2" title="Изменить">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <a href="/books/{{$id}}/delete" class="btn btn-sm btn-danger" title="Удалить"
+                   onclick="return confirm('Удалить книгу?')">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+
+            <h5 class="card-title">{{ .Title }}</h5>
+            <p class="card-text"><strong>Автор:</strong> {{ .Author }}</p>
+            <p class="card-text"><strong>Год издания:</strong> {{ .PublicationYear }}</p>
+            <p class="card-text text-muted small">ID: {{ $id }}</p>
+        </div>
+    </div>
+{{ end }}
+{{ else }}
+<div class="alert alert-info" role="alert">
+    Книг нет.
+</div>
+{{ end }}
+{{ end }}

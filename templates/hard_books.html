@@ -1,0 +1,28 @@
+{{ define "title" }}Книги{{ end }}
+
+{{ define "hard_book_content" }}
+<h1>Жесткие копии книг</h1>
+<a href="/hard_books/new" class="btn btn-success mb-4">Добавить книгу</a>
+
+{{ if .books }}
+<p>Найдено записей: {{ len .books }}</p>
+<ul class="list-group">
+    {{ range .books }}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>ID:</strong> {{ toHex .ID }}<br>
+                <strong>Inventory ID:</strong> {{ toHex .InventoryID }}<br>
+                <strong>Дата приобретения:</strong> {{ .AcquisitionDate.Time.Format "2006-01-02" }}
+            </div>
+            <div>
+                <a href="/hard_books/{{ toHex .ID }}" class="btn btn-sm btn-warning me-1">Изменить</a>
+                <a href="/hard_books/{{ toHex .ID }}/delete" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Удалить?')">Удалить</a>
+            </div>
+        </li>
+    {{ end }}
+</ul>
+{{ else }}
+<div class="alert alert-info">Книг нет.</div>
+{{ end }}
+{{ end }}

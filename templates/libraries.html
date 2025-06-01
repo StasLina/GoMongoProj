@@ -1,0 +1,71 @@
+<!-- templates/libraries.html -->
+{{ define "libraries_content" }}
+<div class="container">
+    <h1 class="mb-4">Библиотеки</h1>
+    <a href="/libraries/new" class="btn btn-success mb-4">
+        <i class="bi bi-plus-circle"></i> Добавить библиотеку
+    </a>
+
+    {{ if .libraries }}
+        <p class="mb-3">Найдено библиотек: {{ len .libraries }}</p>
+
+        {{ range .libraries }}
+            {{ $libraryID := .ID.Hex }}
+
+            <div class="card library-card shadow-sm">
+                <div class="card-body">
+                    <div class="position-absolute" style="top: 10px; right: 15px;">
+                        <a href="/libraries/{{ $libraryID }}/edit"
+                           class="btn btn-sm btn-warning me-2"
+                           title="Редактировать">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="/libraries/{{ $libraryID }}/delete"
+                           class="btn btn-sm btn-danger"
+                           title="Удалить"
+                           onclick="return confirm('Удалить библиотеку?')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+
+                    <h4 class="card-title">{{ .Name }}</h4>
+                    <p class="card-text"><strong>ID:</strong> {{ $libraryID }}</p>
+                    <p class="card-text"><strong>Адрес:</strong> {{ .Address }}</p>
+
+                    <!-- Кнопка раскрытия филиалов -->
+                    <button class="btn btn-outline-primary mb-3" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#locations-{{ $libraryID }}"
+                            aria-expanded="false"
+                            aria-controls="locations-{{ $libraryID }}">
+                        <i class="bi bi-building"></i> Филиалы
+                    </button>
+
+                    <!-- Блок с филиалами -->
+                    <div class="collapse location-list" id="locations-{{ $libraryID }}">
+                        {{ if .Locations }}
+                            <ul class="list-group list-group-flush mb-3">
+                                {{ range .Locations }}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <strong>{{ .Name }}</strong><br>
+                                            <small>ID: {{ .LocationID.Hex }}</small><br>
+                                            Тип: {{ .Type }}
+                                        </span>
+                                    </li>
+                                {{ end }}
+                            </ul>
+                        {{ else }}
+                            <p class="text-muted">Нет филиалов</p>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        {{ end }}
+    {{ else }}
+        <div class="alert alert-info" role="alert">
+            Библиотек не найдено.
+        </div>
+    {{ end }}
+</div>
+{{ end }}

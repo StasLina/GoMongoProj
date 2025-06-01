@@ -1,0 +1,27 @@
+{{ define "book_inventory_edit_content" }}
+<h1>Изменить книгу</h1>
+<form method="POST">
+    <input type="hidden" name="_id" value="{{ .book.ID.Hex }}">
+    <div class="mb-3">
+        <label>Заголовок</label>
+        <input type="text" name="title" class="form-control" value="{{ .book.Title }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Автор</label>
+        <input type="text" name="author" class="form-control" value="{{ .book.Author }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Количество</label>
+        <input type="number" name="quantity" class="form-control" value="{{ .book.Quantity }}" required>
+    </div>
+    <div class="mb-3">
+        <label>Book ID</label>
+        <input type="text" name="bookId" class="form-control" value="{{ .book.BookID.Hex }}">
+    </div>
+    <div class="mb-3">
+        <label>Location ID</label>
+        <input type="text" name="locationId" class="form-control" value="{{ .book.LocationID.Hex }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Обновить</button>
+</form>
+{{ end }}

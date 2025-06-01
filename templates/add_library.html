@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить библиотеку</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"  rel="stylesheet">
+    <style>
+        .location-group {
+            flex-wrap: nowrap; /* чтобы элементы не перескакивали на новую строку */
+            align-items: center;
+        }
+        .location-group .btn.btn-danger {
+            height: 38px; /* одинаковая высота с input */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="container mt-4">
+    <h1>Добавить библиотеку</h1>
+
+    <form action="/libraries" method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Название</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Адрес</label>
+            <input type="text" id="address" name="address" class="form-control" required>
+        </div>
+
+        <h4>Локации</h4>
+        <div id="locations"></div>
+
+        <button type="button" class="btn btn-secondary" onclick="addLocation()">+ Добавить филиал</button>
+        <button type="submit" class="btn btn-primary mt-0"> Сохранить</button>
+    </form>
+
+    <script>
+        // Добавляем первый блок при загрузке страницы
+        window.onload = () => addLocation();
+
+        function addLocation() {
+            const container = document.getElementById('locations');
+            const div = document.createElement('div');
+            div.className = 'location-group mb-3 d-flex gap-2';
+            div.style.flexWrap = 'nowrap';
+
+            div.innerHTML = `
+                <input type="text" name="locationNames[]" placeholder="Название филиала" class="form-control" required>
+                <input type="text" name="locationTypes[]" placeholder="Тип филиала" class="form-control" required>
+                <button type="button" class="btn btn-sm btn-danger d-flex align-items-center" onclick="removeLocation(this)" title="Удалить">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+
+            container.appendChild(div);
+        }
+
+        function removeLocation(button) {
+            const group = button.closest('.location-group');
+            group.remove();
+        }
+    </script>
+</body>
+</html>

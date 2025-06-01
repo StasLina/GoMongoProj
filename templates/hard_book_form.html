@@ -1,0 +1,23 @@
+{{ define "title" }}{{ .title }}{{ end }}
+
+{{ define "hard_book_form_content" }}
+<h2>{{ .title }}</h2>
+<form method="{{ .method }}" action="{{ .action }}">
+    <input type="hidden" name="_method" value="{{ .method }}">
+
+    <div class="mb-3">
+        <label for="inventoryId" class="form-label">Inventory ID</label>
+        <input type="text" class="form-control" id="inventoryId" name="inventoryId"
+               value="{{ if .book.InventoryID }}{{ toHex .book.InventoryID }}{{ end }}"
+               placeholder="Оставьте пустым, чтобы создать новый">
+    </div>
+
+    <div class="mb-3">
+        <label for="acquisitionDate" class="form-label">Дата приобретения</label>
+        <input type="date" class="form-control" id="acquisitionDate" name="acquisitionDate"
+               value="{{ .book.AcquisitionDate.Time.Format "2006-01-02" }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ .submitText }}</button>
+</form>
+{{ end }}
