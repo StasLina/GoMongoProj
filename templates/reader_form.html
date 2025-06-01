@@ -1,0 +1,106 @@
+{{ define "reader_form_content" }}
+
+<form method="{{ .Method }}" action="{{ .Action }}">
+    <div class="mb-3">
+        <label for="fullName" class="form-label">ФИО</label>
+        <input type="text" class="form-control" name="fullName" value="{{ if .Reader }}{{ .Reader.FullName }}{{ end }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Категория</label>
+        <input type="hidden" name="categoryId" value="{{ if .Reader }}{{ toHex .Reader.Category.CategoryID }}{{ end }}">
+        <input type="text" class="form-control" name="categoryName" placeholder="Название категории" value="{{ if .Reader }}{{ .Reader.Category.Name }}{{ end }}" required>
+        <input type="number" class="form-control mt-2" name="maxBorrowDays" placeholder="Макс. дней" value="{{ if .Reader }}{{ .Reader.Category.MaxBorrowDays }}{{ end }}" required>
+    </div>
+
+    <h5>Атрибуты</h5>
+    <div id="attributes">
+        {{ if .Reader }}
+            {{ range .Reader.Attributes }}
+                <div class="row mb-2">
+                    <div class="col">
+                        <input type="text" class="form-control" name="attributeName" value="{{ .Name }}">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" name="attributeValue" value="{{ .Value }}">
+                    </div>
+                </div>
+            {{ end }}
+        {{ else }}
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="text" class="form-control" name="attributeName" placeholder="Название">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="attributeValue" placeholder="Значение">
+                </div>
+            </div>
+        {{ end }}
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addAttribute()">+ Добавить атрибут</button>
+
+    <h5>Подписки</h5>
+    <div id="subscriptions">
+        {{ if .Reader }}
+            {{ range .Reader.Subscriptions }}
+                <div class="row mb-2">
+                    <div class="col">
+                        <input type="text" class="form-control" name="locationId" value="{{ toHex .LocationID }}" placeholder="Location ID">
+                    </div>
+                    <div class="col">
+                        <input type="date" class="form-control" name="startDate" value="{{ .StartDate.Time.Format "2006-01-02" }}">
+                    </div>
+                    <div class="col">
+                        <input type="date" class="form-control" name="endDate" value="{{ .EndDate.Time.Format "2006-01-02" }}">
+                    </div>
+                    <div class="col">
+                        <input type="number" class="form-control" name="maxBooks" value="{{ .MaxBooks }}">
+                    </div>
+                </div>
+            {{ end }}
+        {{ else }}
+            <div class="row mb-2">
+                <div class="col">
+                    <input type="text" class="form-control" name="locationId" placeholder="Location ID">
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="startDate">
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="endDate">
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" name="maxBooks">
+                </div>
+            </div>
+        {{ end }}
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" onclick="addSubscription()">+ Добавить подписку</button>
+
+    <button type="submit" class="btn btn-primary">{{ if .Reader }}Обновить{{ else }}Создать{{ end }}</button>
+</form>
+
+<script>
+function addAttribute() {
+    const container = document.getElementById("attributes");
+    const div = document.createElement("div");
+    div.className = "row mb-2";
+    div.innerHTML = `
+        <div class="col"><input type="text" class="form-control" name="attributeName" placeholder="Название"></div>
+        <div class="col"><input type="text" class="form-control" name="attributeValue" placeholder="Значение"></div>`;
+    container.appendChild(div);
+}
+
+function addSubscription() {
+    const container = document.getElementById("subscriptions");
+    const div = document.createElement("div");
+    div.className = "row mb-2";
+    div.innerHTML = `
+        <div class="col"><input type="text" class="form-control" name="locationId" placeholder="Location ID"></div>
+        <div class="col"><input type="date" class="form-control" name="startDate"></div>
+        <div class="col"><input type="date" class="form-control" name="endDate"></div>
+        <div class="col"><input type="number" class="form-control" name="maxBooks"></div>`;
+    container.appendChild(div);
+}
+</script>
+{{ end }}

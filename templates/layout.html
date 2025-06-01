@@ -39,10 +39,10 @@
             {{ template "hard_book_form_content" . }}
         {{ else if eq $tmpl "hard_book" }}
             {{ template "hard_book_content" . }}
-        {{ else if eq $tmpl "book_form" }}
-            {{ template "book_form_content" . }}
-        {{ else if eq $tmpl "book_form" }}
-            {{ template "book_form_content" . }}
+        {{ else if eq $tmpl "reader_form" }}
+            {{ template "reader_form_content" . }}
+        {{ else if eq $tmpl "reader" }}
+            {{ template "reader_content" . }}
         {{ else }}
             {{ template "menu" . }}
         {{ end }}

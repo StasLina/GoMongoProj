@@ -44,6 +44,20 @@ func setupHardBooksRoutes(r *gin.Engine, db *mongo.Database) {
 	r.GET("/hard_books/:id/delete", handler.Delete)
 
 }
+
+func setupReaderRoutes(r *gin.Engine, db *mongo.Database) {
+	readerRepo := repository.NewReaderRepository(db)
+	readerHandler := handlers.NewReaderHandler(readerRepo)
+
+	// Routes
+	r.GET("/readers", readerHandler.GetAllReaders)
+	r.GET("/readers/:id", readerHandler.GetReaderByID)
+	r.GET("/readers/new", readerHandler.ShowCreateForm)
+	r.POST("/readers", readerHandler.CreateReader)
+	r.GET("/readers/:id/edit", readerHandler.ShowEditForm)
+	r.POST("/readers/:id/update", readerHandler.UpdateReader)
+	r.GET("/readers/:id/delete", readerHandler.DeleteReader)
+}
 func SetupRoutes(r *gin.Engine, db *mongo.Database) {
 	r.GET("/libraries", handlers.GetLibraries)
 	r.GET("/libraries/new", handlers.ShowAddLibraryForm)
@@ -55,4 +69,5 @@ func SetupRoutes(r *gin.Engine, db *mongo.Database) {
 	setupBooks(r, db)
 	setupBooksRepo(r, db)
 	setupHardBooksRoutes(r, db)
+	setupReaderRoutes(r, db)
 }

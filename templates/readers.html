@@ -1,0 +1,47 @@
+{{ define "reader_content" }}
+<h1 class="mb-4">Читатели</h1>
+
+<a href="/readers/new" class="btn btn-success mb-4">
+    <i class="bi bi-plus-circle"></i> Добавить читателя
+</a>
+
+{{ if .Readers }}
+<p class="mb-3">Найдено читателей: {{ len .Readers }}</p>
+
+{{ range .Readers }}
+    {{ $id := toHex .ID }}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <div class="position-absolute" style="top: 10px; right: 15px;">
+                <a href="/readers/{{ $id }}/edit" class="btn btn-sm btn-warning me-2" title="Редактировать">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <a href="/readers/{{ $id }}/delete" class="btn btn-sm btn-danger" title="Удалить"
+                   onclick="return confirm('Удалить этого читателя?')">
+                    <i class="bi bi-trash"></i>
+                </a>
+            </div>
+
+            <h5 class="card-title">{{ .FullName }}</h5>
+            <p><strong>ID:</strong> {{ $id }}</p>
+
+            <!-- Категория -->
+            <p><strong>Категория:</strong> {{ .Category.Name }} ({{ .Category.MaxBorrowDays }} дней)</p>
+
+            <!-- Атрибуты -->
+            {{ if .Attributes }}
+                <ul class="list-group list-group-flush mb-2">
+                    {{ range .Attributes }}
+                        <li class="list-group-item">{{ .Name }}: {{ .Value }}</li>
+                    {{ end }}
+                </ul>
+            {{ end }}
+        </div>
+    </div>
+{{ end }}
+{{ else }}
+<div class="alert alert-info" role="alert">
+    Читатели не найдены.
+</div>
+{{ end }}
+{{ end }}
