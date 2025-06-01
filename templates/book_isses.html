@@ -1,0 +1,32 @@
+{{ define "book_issues_content" }}
+<h1 class="mb-4">Выдачи книг</h1>
+<a href="/bookissues/new" class="btn btn-success mb-4">Добавить запись</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Книга</th>
+            <th>Читатель</th>
+            <th>Дата выдачи</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ range .issues }}
+        <tr>
+            <td>{{ call $.toHex .ID }}</td>
+            <td>{{ .Book.Title }} - {{ .Book.Author }}</td>
+            <td>{{ .BookIssueUser.FullName }}</td>
+            <td>{{ .IssueDate.Format "2006-01-02" }}</td>
+            <td>{{ .Status }}</td>
+            <td>
+                <a href="/bookissues/{{ call $.toHex .ID }}/update" class="btn btn-sm btn-warning me-1">Редактировать</a>
+                <a href="/bookissues/{{ call $.toHex .ID }}/delete" class="btn btn-sm btn-danger" onclick="return confirm('Удалить запись?')">Удалить</a>
+            </td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+{{ end }}

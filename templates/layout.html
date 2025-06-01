@@ -43,6 +43,10 @@
             {{ template "reader_form_content" . }}
         {{ else if eq $tmpl "reader" }}
             {{ template "reader_content" . }}
+        {{ else if eq $tmpl "book_issues" }}
+            {{ template "book_issues_content" . }}
+        {{ else if eq $tmpl "book_issue_form" }}
+            {{ template "book_issue_form_content" . }}
         {{ else }}
             {{ template "menu" . }}
         {{ end }}

@@ -1,0 +1,44 @@
+{{ define "book_issue_form_content" }}
+<form method="{{ .method }}" action="{{ .action }}">
+    <div class="mb-3">
+        <label for="bookTitle" class="form-label">Название книги</label>
+        <input type="text" name="bookTitle" value="{{ .issue.Book.Title }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="bookAuthor" class="form-label">Автор</label>
+        <input type="text" name="bookAuthor" value="{{ .issue.Book.Author }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="fullName" class="form-label">Имя читателя</label>
+        <input type="text" name="fullName" value="{{ .issue.BookIssueUser.FullName }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="issueDate" class="form-label">Дата выдачи</label>
+        <input type="date" name="issueDate" value="{{ .issue.IssueDate.Format "2006-01-02" }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="dueDate" class="form-label">Срок возврата</label>
+        <input type="date" name="dueDate" value="{{ .issue.DueDate.Format "2006-01-02" }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="returnDate" class="form-label">Дата возврата</label>
+        <input type="date" name="returnDate" value="{{ if .issue.ReturnDate }}{{ .issue.ReturnDate.Format "2006-01-02" }}{{ end }}" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="status" class="form-label">Статус</label>
+        <select name="status" class="form-select">
+            <option value="возвращено" {{ if eq .issue.Status "возвращено" }}selected{{ end }}>возвращено</option>
+            <option value="задолженность" {{ if eq .issue.Status "задолженность" }}selected{{ end }}>задолженность</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ .submitText }}</button>
+    <a href="/bookissues" class="btn btn-secondary">Отмена</a>
+</form>
+{{ end }}
