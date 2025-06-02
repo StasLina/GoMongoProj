@@ -71,6 +71,24 @@ func setupBookIssues(r *gin.Engine, db *mongo.Database) {
 	r.GET("/bookissues/:id/delete", handler.DeleteBookIssue)
 }
 
+func setupInterLibraryRequest(r *gin.Engine, db *mongo.Database) {
+	reqRepo := repository.NewInterlibraryRequestRepository(db)
+	reqHandler := handlers.NewInterlibraryRequestHandler(reqRepo)
+
+	r.GET("/requests", reqHandler.GetAll)
+	r.GET("/requests/new", reqHandler.GetCreateForm)
+	r.POST("/requests/create", reqHandler.Create)
+	r.GET("/requests/:id", reqHandler.GetByID)
+	r.GET("/requests/:id/edit", reqHandler.GetEditForm)
+	r.POST("/requests/:id/update", reqHandler.Update)
+	r.POST("/requests/:id/delete", func(c *gin.Context) {
+		if c.PostForm("_method") == "DELETE" {
+			reqHandler.Delete(c)
+		} else {
+			c.AbortWithStatusJSON(400, gin.H{"error": "Unknown method"})
+		}
+	})
+}
 func SetupRoutes(r *gin.Engine, db *mongo.Database) {
 	r.GET("/libraries", handlers.GetLibraries)
 	r.GET("/libraries/new", handlers.ShowAddLibraryForm)
@@ -84,4 +102,5 @@ func SetupRoutes(r *gin.Engine, db *mongo.Database) {
 	setupHardBooksRoutes(r, db)
 	setupReaderRoutes(r, db)
 	setupBookIssues(r, db)
+	setupInterLibraryRequest(r, db)
 }

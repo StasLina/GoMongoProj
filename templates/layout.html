@@ -47,6 +47,10 @@
             {{ template "book_issues_content" . }}
         {{ else if eq $tmpl "book_issue_form" }}
             {{ template "book_issue_form_content" . }}
+        {{ else if eq $tmpl "interlibrary_requests" }}
+            {{ template "interlibrary_requests_content" . }}
+        {{ else if eq $tmpl "interlibrary_request_form" }}
+            {{ template "interlibrary_request_form_content" . }}
         {{ else }}
             {{ template "menu" . }}
         {{ end }}

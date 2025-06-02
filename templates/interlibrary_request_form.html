@@ -1,0 +1,194 @@
+<!-- templates/interlibrary_request_form.html -->
+{{ define "interlibrary_request_form_content" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ if .isEdit }}Редактировать{{ else }}Создать{{ end }} запрос</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"  rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Library System</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4">{{ if .isEdit }}Редактировать{{ else }}Создать{{ end }} межбиблиотечный запрос</h1>
+
+        <form method="POST" action="{{ if .isEdit }}/requests/{{ .request.ID.Hex }}/update {{ else }}/requests/create{{ end }}">
+
+
+            <!-- Блок источника -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Источник - ID филиала</label>
+                    <input type="text" name="source_location_id" class="form-control"
+                           value="{{ if .isEdit }}{{ .request.SourceLocation.LocationID.Hex }}{{ end }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Источник - ID библиотеки</label>
+                    <input type="text" name="source_library_id" class="form-control"
+                           value="{{ if .isEdit }}{{ .request.SourceLocation.LibraryID.Hex }}{{ end }}">
+                </div>
+            </div>
+
+            <!-- Блок получателя -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Получатель - ID филиала</label>
+                    <input type="text" name="destination_location_id" class="form-control"
+                           value="{{ if .isEdit }}{{ .request.DestinationLocation.LocationID.Hex }}{{ end }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Получатель - ID библиотеки</label>
+                    <input type="text" name="destination_library_id" class="form-control"
+                           value="{{ if .isEdit }}{{ .request.DestinationLocation.LibraryID.Hex }}{{ end }}">
+                </div>
+            </div>
+
+            <!-- Статус -->
+            <div class="mb-3">
+                <label class="form-label">Статус</label>
+                <input type="text" name="status" class="form-control" value="{{ if .isEdit }}{{ .request.Status }}{{ end }}" required>
+            </div>
+
+            <!-- Список книг -->
+            <h5 class="mt-4 mb-3">Книги</h5>
+            <div id="book-details-container">
+
+                {{ if and .isEdit .request.Details }}
+                    {{ range $index, $detail := .request.Details }}
+                        <div class="card book-detail-card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label class="form-label">Book ID</label>
+                                        <input type="text" name="detail[{{ $index }}][book_id]" class="form-control"
+                                               value="{{ $detail.BookID.Hex }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Название</label>
+                                        <input type="text" name="detail[{{ $index }}][title]" class="form-control"
+                                               value="{{ $detail.Title }}" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Автор</label>
+                                        <input type="text" name="detail[{{ $index }}][author]" class="form-control"
+                                               value="{{ $detail.Author }}" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Количество</label>
+                                        <input type="number" name="detail[{{ $index }}][quantity]" class="form-control"
+                                               value="{{ $detail.Quantity }}" min="1" required>
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm remove-book-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{ end }}
+                {{ else }}
+                    <div class="card book-detail-card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="form-label">Book ID</label>
+                                    <input type="text" name="detail[0][book_id]" class="form-control" placeholder="оставить пустым для генерации">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Название</label>
+                                    <input type="text" name="detail[0][title]" class="form-control" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Автор</label>
+                                    <input type="text" name="detail[0][author]" class="form-control" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Количество</label>
+                                    <input type="number" name="detail[0][quantity]" class="form-control" min="1" required>
+                                </div>
+                                <div class="col-md-1 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger btn-sm remove-book-btn">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{ end }}
+
+            </div>
+
+            <button type="button" class="btn btn-secondary mb-4" id="add-book-btn">
+                <i class="bi bi-plus-circle"></i> Добавить книгу
+            </button>
+
+            <button type="submit" class="btn btn-primary">{{ if .isEdit }}Обновить{{ else }}Создать{{ end }}</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let detailIndex = {{ if .isEdit }}{{ len .request.Details }}{{ else }}0{{ end }};
+
+            document.getElementById("add-book-btn").addEventListener("click", function () {
+                const container = document.getElementById("book-details-container");
+
+                const card = document.createElement("div");
+                card.className = "card book-detail-card mb-3";
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="form-label">Book ID</label>
+                                <input type="text" name="detail[${detailIndex}][book_id]" class="form-control" placeholder="оставить пустым для генерации">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Название</label>
+                                <input type="text" name="detail[${detailIndex}][title]" class="form-control" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Автор</label>
+                                <input type="text" name="detail[${detailIndex}][author]" class="form-control" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Количество</label>
+                                <input type="number" name="detail[${detailIndex}][quantity]" class="form-control" min="1" required>
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger btn-sm remove-book-btn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                // Удаление карточки
+                card.querySelector(".remove-book-btn").addEventListener("click", function () {
+                    card.remove();
+                });
+
+                detailIndex++;
+            });
+
+            // Удаление уже добавленных
+            document.querySelectorAll(".remove-book-btn").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    btn.closest(".book-detail-card").remove();
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+</body>
+</html>
+{{ end }}
