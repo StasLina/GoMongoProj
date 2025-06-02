@@ -25,6 +25,10 @@
         {{ $tmpl := .content_template }}
         {{ if eq $tmpl "libraries" }}
             {{ template "libraries_content" . }}
+        {{ else if eq $tmpl "library_add" }}
+            {{ template "library_add_content" . }}
+        {{ else if eq $tmpl "library_edit" }}
+            {{ template "library_edit_content" . }}
         {{ else if eq $tmpl "books" }}
             {{ template "books_content" . }}
         {{ else if eq $tmpl "book_form" }}

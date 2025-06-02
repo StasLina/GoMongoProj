@@ -16,14 +16,15 @@ func GetLibraries(c *gin.Context) {
 	}
 
 	c.HTML(200, "layout.html", gin.H{
-		// "renderContent": helpers.RenderTemplate("libraries_content"),
 		"content_template": "libraries",
 		"libraries":        libraries,
 	})
 }
 
 func ShowAddLibraryForm(c *gin.Context) {
-	c.HTML(200, "add_library.html", nil)
+	c.HTML(200, "layout.html", gin.H{
+		"content_template": "library_add",
+	})
 }
 
 func CreateLibrary(c *gin.Context) {
@@ -59,9 +60,10 @@ func EditLibrary(c *gin.Context) {
 		return
 	}
 
-	c.HTML(200, "edit_library.html", gin.H{
-		"Library":   library,
-		"libraryID": id,
+	c.HTML(200, "layout.html", gin.H{
+		"content_template": "library_edit",
+		"Library":          library,
+		"libraryID":        id,
 	})
 }
 

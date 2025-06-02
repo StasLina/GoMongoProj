@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Редактировать библиотеку</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"  rel="stylesheet">
-</head>
-<body class="container mt-4 position-relative">
+{{ define "library_edit_content" }}
     <h1>Редактировать библиотеку</h1>
     {{ $libraryID := .libraryID }}
     <!-- Кнопка удаления в правом верхнем углу -->
@@ -72,5 +65,4 @@
             group.remove();
         }
     </script>
-</body>
-</html>
+{{ end }}

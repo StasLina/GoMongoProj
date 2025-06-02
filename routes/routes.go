@@ -90,6 +90,7 @@ func setupInterLibraryRequest(r *gin.Engine, db *mongo.Database) {
 	})
 }
 func SetupRoutes(r *gin.Engine, db *mongo.Database) {
+	r.GET("/", func(c *gin.Context) { c.HTML(200, "index.html", nil) })
 	r.GET("/libraries", handlers.GetLibraries)
 	r.GET("/libraries/new", handlers.ShowAddLibraryForm)
 	r.POST("/libraries", handlers.CreateLibrary)

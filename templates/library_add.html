@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Добавить библиотеку</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"  rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"  rel="stylesheet">
-    <style>
-        .location-group {
-            flex-wrap: nowrap; /* чтобы элементы не перескакивали на новую строку */
-            align-items: center;
-        }
-        .location-group .btn.btn-danger {
-            height: 38px; /* одинаковая высота с input */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-        }
-    </style>
-</head>
-<body class="container mt-4">
-    <h1>Добавить библиотеку</h1>
+{{ define "library_add_content" }}
+<h1>Добавить библиотеку</h1>
 
     <form action="/libraries" method="POST">
         <div class="mb-3">
@@ -32,11 +12,11 @@
             <input type="text" id="address" name="address" class="form-control" required>
         </div>
 
-        <h4>Локации</h4>
+        <h4>Филиалы</h4>
         <div id="locations"></div>
 
         <button type="button" class="btn btn-secondary" onclick="addLocation()">+ Добавить филиал</button>
-        <button type="submit" class="btn btn-primary mt-0"> Сохранить</button>
+        <button type="submit" class="btn btn-primary mt-0">Сохранить</button>
     </form>
 
     <script>
@@ -65,5 +45,4 @@
             group.remove();
         }
     </script>
-</body>
-</html>
+{{ end }}
